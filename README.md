@@ -359,3 +359,6 @@ panic: assignment to entry in nil map
 Nil
 
 ```
+
+## Sec-18
+  ### Tips 
