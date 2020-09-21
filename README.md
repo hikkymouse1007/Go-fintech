@@ -111,5 +111,17 @@ var (
  
  ## Sec-9 
   ### Tips
+定数の性質 
+```
+// varは宣言時にコンパイラでオーバーフローする
+//var big int =	9223372036854775807 + 1
+// consはコンパイル実行時に宣言はオーバーフローしない
+const big =	9223372036854775807 + 1
+
+func main() {
+	fmt.Println(Pi, Username, Password)
+	fmt.Println(big - 1)
+}
+```
  
 

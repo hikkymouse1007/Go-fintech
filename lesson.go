@@ -1,27 +1,20 @@
 package main
 
-import (
-	"fmt"
+import "fmt"
+
+const Pi = 3.14
+
+const (
+	Username = "test_user"
+	Password = "test_pass"
 )
 
-var (
-	i int = 1
-	f64 float64 = 1.2
-	s string = "test"
-	t, f bool = true, false
-)
-
-func foo()  {
-	xi := 1
-	var xf32 float32 = 1.2
-	xs := "test"
-	xt, xf := true, false
-	fmt.Println(xi, xf32, xs, xt, xf)
-	fmt.Printf("%T\n", xf32)
-	fmt.Printf("%T\n", xi)
-}
+// varは宣言時にコンパイラでオーバーフローする
+//var big int =	9223372036854775807 + 1
+// consはコンパイル実行時に宣言はオーバーフローしない
+const big =	9223372036854775807 + 1
 
 func main() {
-	fmt.Println(i, f64, s, t, f)
-	foo()
+	fmt.Println(Pi, Username, Password)
+	fmt.Println(big - 1)
 }
