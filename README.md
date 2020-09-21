@@ -227,3 +227,77 @@ slice([])はサイズ変更できる
 
 ```
 
+## Sec-16 
+  ### Tips
+スライスのmakeについて
+```
+Creating a slice with make
+スライスは、組み込みの make 関数を使用して作成することができます。 これは、動的サイズの配列を作成する方法です。
+
+make 関数はゼロ化された配列を割り当て、その配列を指すスライスを返します。
+
+a := make([]int, 5)  // len(a)=5
+make の3番目の引数に、スライスの容量( capacity )を指定できます。 cap(b) で、スライスの容量を返します:
+
+b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+b = b[:cap(b)] // len(b)=5, cap(b)=5
+b = b[1:]      // len(b)=4, cap(b)=4
+
+
+// len = 3, cap = 3
+a := make([]int, 3)
+fmt.Printf("len=%d cap=%d value=%v\n", len(a), cap(a), a)
+
+//b: 0のスライスをメモリ確保, c: nill
+b := make([]int, 0)
+var c []int
+
+//1: c = make([]int, 5)
+//2: c = make([]int, 0, 5)
+
+	for i := 0; i < 5; i++ {
+		c = append(c, i)
+		fmt.Println(c)
+	}
+	fmt.Println(c)
+
+// 1の結果
+[0 0 0 0 0 0]
+[0 0 0 0 0 0 1]
+[0 0 0 0 0 0 1 2]
+[0 0 0 0 0 0 1 2 3]
+[0 0 0 0 0 0 1 2 3 4]
+[0 0 0 0 0 0 1 2 3 4]
+
+// 2の結果
+[0]
+[0 1]
+[0 1 2]
+[0 1 2 3]
+[0 1 2 3 4]
+[0 1 2 3 4]
+
+
+
+
+
+
+
+~~~~
+
+```
+
+書式指定子
+```
+
+// %d 基数10
+    d := 5
+    fmt.Printf("基数10 = %d\n", d)
+
+// %T 値の型7
+    fmt.Printf("int = %T\n", n)
+    int = int
+
+//
+```
