@@ -1,24 +1,19 @@
 package main
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
 
 func main() {
-	var x int = 1
-	xx := float64(x)
-	fmt.Printf("%T %v %f\n", xx, xx, xx)
+	var a [2]int
+	a[0] = 100
+	a[1] = 200
+	fmt.Println(a)
 
-	var y float64 = 1.2
-	yy := int(y)
-	fmt.Printf("%T %v %d\n", yy, yy, yy)
+	/*var b [2]int = [2]int{100, 200}
+	b = append(b ,300) // appendできない
+	fmt.Println(b)
+	*/
 
-	var s string = "14"
-	// Atoiのreturnはint, errorだが、errorの変数は使わない
-	i, _ := strconv.Atoi(s)
-	fmt.Printf("%T %v\n", i, i)
-
-	h := "Hello World"
-	fmt.Println(string(h[0]))
+	var b []int = []int{100, 200}
+	b = append(b, 300)
+	fmt.Println(b)
 }

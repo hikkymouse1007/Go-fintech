@@ -209,3 +209,21 @@ func Atoi(s string) (int, error) {
 		return n, nil
 	}
 ```
+
+## Sec-14 
+  ### Tips
+配列とスライス
+
+```
+配列([num])はサイズ変更できない
+    var b [2]int = [2]int{100, 200}
+	b = append(b ,300) // appendできない
+	fmt.Println(b)
+
+slice([])はサイズ変更できる
+	var b []int = []int{100, 200}
+	b = append(b, 300)
+	fmt.Println(b)
+
+```
+
