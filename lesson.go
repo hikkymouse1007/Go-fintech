@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os/user"
+	"time"
+)
 
 func init() {
 	fmt.Println("Init!")
@@ -12,5 +16,6 @@ func buzz()  {
 
 func main() {
 	//buzz()
-	fmt.Println("hello world tes2")
+	fmt.Println("hello world", time.Now())
+	fmt.Println(user.Current())
 }
