@@ -93,3 +93,23 @@ dd: 1行削除
 D: 行末で削除
 (num) + dd: カーソルから指定行数分削除
 ```
+
+
+ ## Sec-8 
+  ### Tips
+ -  変数は複数宣言できる
+```
+var (
+    var xf32 float32 = 1.2 //型を明示する
+	i int = 1
+	f64 float64 = 1.2
+	s string = "test"
+	t, f bool = true, false
+)
+```
+
+ 
+ ## Sec-9 
+  ### Tips
+ 
+
