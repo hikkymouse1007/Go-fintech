@@ -159,3 +159,13 @@ Shift+v で行単位のビジュアルモードに入り、範囲を指定する
 基本的にはpは次の行へのペーストになる
 ```
 https://kaworu.jpn.org/vim/vim%E3%81%A7%E8%A1%8C%E3%82%92%E8%A4%87%E8%A3%BD%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95
+
+string型の特徴
+
+```
+ 	fmt.Println("Hello World"[0])         //ASCII表示
+	fmt.Println(string("Hello World"[0])) //typecasting
+// エスケープ文字列
+	fmt.Println("\"")
+	fmt.Println(`"`)
+```

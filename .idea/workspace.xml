@@ -34,6 +34,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunManager" selected="Go Build.go">
@@ -85,25 +86,33 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1600678935973" />
-    <state width="458" height="529" key="GridCell.Tab.0.bottom" timestamp="1600684257749">
+    <state x="422" y="259" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1600684415370">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="458" height="529" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1600684257749" />
+    <state x="422" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1600684415370" />
+    <state x="468" y="312" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1600684562396">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="468" y="312" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1440.900@0.0.1440.900" timestamp="1600684562396" />
+    <state width="457" height="802" key="GridCell.Tab.0.bottom" timestamp="1600685001702">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="457" height="802" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1600685001702" />
     <state width="336" height="444" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1600683501479" />
-    <state width="458" height="529" key="GridCell.Tab.0.center" timestamp="1600684257748">
+    <state width="457" height="802" key="GridCell.Tab.0.center" timestamp="1600685001701">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="458" height="529" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1600684257748" />
+    <state width="457" height="802" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1600685001701" />
     <state width="336" height="444" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1600683501479" />
-    <state width="458" height="529" key="GridCell.Tab.0.left" timestamp="1600684257747">
+    <state width="457" height="802" key="GridCell.Tab.0.left" timestamp="1600685001700">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="458" height="529" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1600684257747" />
+    <state width="457" height="802" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1600685001700" />
     <state width="336" height="444" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1600683501478" />
-    <state width="458" height="529" key="GridCell.Tab.0.right" timestamp="1600684257748">
+    <state width="457" height="802" key="GridCell.Tab.0.right" timestamp="1600685001702">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="458" height="529" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1600684257748" />
+    <state width="457" height="802" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1600685001702" />
     <state width="336" height="444" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1600683501479" />
     <state x="499" y="159" key="RollbackChangesDialog" timestamp="1600683698438">
       <screen x="0" y="0" width="1440" height="900" />

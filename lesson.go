@@ -1,22 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"strings"
-)
+import "fmt"
 
 func main() {
-	fmt.Println("Hello World!")
-	fmt.Println("Hello" + "World!")
-	fmt.Println("Hello World"[0])         //ASCII表示
-	fmt.Println(string("Hello World"[0])) //typecasting
-	var s string = "Hello World"
-	//fmt.Println(strings.Replace(s, "H", "X", 1))
-	s = strings.Replace(s, "H", "X", 1) //sの上書き
-	fmt.Println(s)
-	fmt.Println(`test
-				test
-test`)
-	fmt.Println("\"")
-	fmt.Println(`"`)
+	t, f := true, false
+	fmt.Printf("%T %v %t\n", t, 1, t)
+	fmt.Printf("%T %v %t\n", f, 0, f)
+
+	fmt.Println(true && true)
+	fmt.Println(true && false)
+	fmt.Println(false && false)
+
+	fmt.Println(true || false)
 }
