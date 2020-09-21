@@ -2,42 +2,33 @@ package main
 
 import "fmt"
 
-func add(x int, y int) (int, int) {
-	//fmt.Println("add function")
-	//fmt.Println(x + y)
-	return x + y, x - y
+
+func incrementGenerator() (func() int) {
+	x := 0
+	//クロージャ
+	return func() int {
+		x++
+		return x
+	}
 }
 
-// 複数の戻り値を返すときは変数を明示する(result int, tax int etc....)
-func cal(price, item int) (result int) {
-	result = price * item
-	return result
-}
-
-//func cal(price, item int) (int) {
-//	result := price * item
-//	return result
-//}
-
-func convert(price int) float64{
-	return float64(price)
+func circleArea(pi float64) func(radius float64) float64{
+	return func (radius float64) float64{
+		return pi * radius * radius
+	}
 }
 
 func main() {
-	r1, r2 := add(10, 20)
-	fmt.Println(r1, r2)
+	counter := incrementGenerator()
+	fmt.Println(counter())
+	fmt.Println(counter())
+	fmt.Println(counter())
+	fmt.Println(counter())
+	c1 := circleArea(3.14)
+	fmt.Println(c1(2))
+	fmt.Println(c1(3))
 
-	r3 := cal(100, 2)
-	fmt.Println(r3)
-
-	// 無名関数
-	f := func(x int) {
-		fmt.Println("inner func", 1)
-	}
-	f(1)
-
-	// 関数の直接実行ができる
-	func(x int){
-		fmt.Println("inner func", x)
-	}(1)
+	c2 := circleArea(3)
+	fmt.Println(c2(2))
+	fmt.Println(c2(3))
 }
