@@ -2,19 +2,28 @@ package main
 
 import "fmt"
 
-const Pi = 3.14
-
-const (
-	Username = "test_user"
-	Password = "test_pass"
-)
-
-// varは宣言時にコンパイラでオーバーフローする
-//var big int =	9223372036854775807 + 1
-// consはコンパイル実行時に宣言はオーバーフローしない
-const big =	9223372036854775807 + 1
-
 func main() {
-	fmt.Println(Pi, Username, Password)
-	fmt.Println(big - 1)
+	/*var (
+		u8  uint8     = 255
+		i8  int8      = 127
+		f32 float32   = 0.2
+		c64 complex64 = -5 + 12i
+	)
+
+	fmt.Println(u8, i8, f32, c64)
+	fmt.Printf("type=%T value=%v", u8, u8)
+	*/
+
+	/*
+		x := 1 + 1
+		fmt.Println(x)
+		fmt.Println("1 + 1 =", 1+1)
+		fmt.Println("10 + 1 =", 10+1)
+		fmt.Println("10 - 1 =", 10-1)
+	*/
+
+	fmt.Println(1 << 0)
+	fmt.Println(1 << 1)
+	fmt.Println(1 << 2)
+	fmt.Println(1 << 3)
 }
