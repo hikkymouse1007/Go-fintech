@@ -230,12 +230,13 @@ slice([])はサイズ変更できる
 ## Sec-16 
   ### Tips
 スライスのmakeについて
-```
+
 Creating a slice with make
 スライスは、組み込みの make 関数を使用して作成することができます。 これは、動的サイズの配列を作成する方法です。
 
 make 関数はゼロ化された配列を割り当て、その配列を指すスライスを返します。
 
+```
 a := make([]int, 5)  // len(a)=5
 make の3番目の引数に、スライスの容量( capacity )を指定できます。 cap(b) で、スライスの容量を返します:
 
@@ -279,16 +280,10 @@ var c []int
 [0 1 2 3 4]
 
 
-
-
-
-
-
-~~~~
-
 ```
 
 書式指定子
+
 ```
 
 // %d 基数10
@@ -300,4 +295,67 @@ var c []int
     int = int
 
 //
+```
+
+
+## Sec-17 
+  ### Tips
+
+```
+	m := map[string]int{"apple": 100, "banana": 200}
+	fmt.Println(m)
+	fmt.Println(m["apple"])
+=> 
+map[apple:100 banana:200]
+100
+
+	// 新しいval
+	m["banana"] = 300
+	fmt.Println(m)
+=>
+map[apple:100 banana:300]
+
+	// 新しいkey_val
+	m["new"] = 500
+	fmt.Println(m)
+=>
+map[apple:100 banana:300 new:500]
+
+	// 存在しないkey
+	fmt.Println(m["nothing"])
+=>
+0
+
+	v, ok := m["apple"]
+	fmt.Println(v, ok)
+=>
+100 true
+	//v := m["apple"]
+	//fmt.Println(v)
+
+	v2, ok2 := m["nothing"]
+	fmt.Println(v2, ok2)
+=>
+0 false
+
+	m2 :=make(map[string]int)
+	m2["pc"] = 5000
+	fmt.Println(m2)
+=>
+map[pc:5000]
+
+	// nilのmap, memoryにmapがない
+	//var m3 map[string]int
+	//m3["pc"] = 5000
+	//fmt.Println(m3)
+=>
+panic: assignment to entry in nil map
+
+	var s []int
+	if s == nil{
+		fmt.Println("Nil")
+	}
+=>
+Nil
+
 ```
