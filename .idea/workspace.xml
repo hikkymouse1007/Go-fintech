@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fb387030-4a16-47f0-817b-5b3816cd987c" name="Default Changelist" comment="" />
+    <list default="true" id="fb387030-4a16-47f0-817b-5b3816cd987c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lesson.go" beforeDir="false" afterPath="$PROJECT_DIR$/lesson.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +19,9 @@
     </option>
   </component>
   <component name="GOROOT" path="/usr/local/Cellar/go/1.14/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1hnlwQnAgU4YKuGcT7VWycDWqw4" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,6 +30,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
@@ -58,7 +66,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="fb387030-4a16-47f0-817b-5b3816cd987c" name="Default Changelist" comment="" />
@@ -70,33 +78,37 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
     <state x="184" y="112" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600678935973">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1600678935973" />
-    <state width="336" height="444" key="GridCell.Tab.0.bottom" timestamp="1600682865874">
-      <screen x="0" y="23" width="1440" height="877" />
+    <state width="458" height="529" key="GridCell.Tab.0.bottom" timestamp="1600684257749">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="336" height="529" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1600681746187" />
-    <state width="336" height="444" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1600682865874" />
-    <state width="336" height="444" key="GridCell.Tab.0.center" timestamp="1600682865873">
-      <screen x="0" y="23" width="1440" height="877" />
+    <state width="458" height="529" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1600684257749" />
+    <state width="336" height="444" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1600683501479" />
+    <state width="458" height="529" key="GridCell.Tab.0.center" timestamp="1600684257748">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="336" height="529" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1600681746185" />
-    <state width="336" height="444" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1600682865873" />
-    <state width="336" height="444" key="GridCell.Tab.0.left" timestamp="1600682865873">
-      <screen x="0" y="23" width="1440" height="877" />
+    <state width="458" height="529" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1600684257748" />
+    <state width="336" height="444" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1600683501479" />
+    <state width="458" height="529" key="GridCell.Tab.0.left" timestamp="1600684257747">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="336" height="529" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1600681746184" />
-    <state width="336" height="444" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1600682865873" />
-    <state width="336" height="444" key="GridCell.Tab.0.right" timestamp="1600682865873">
-      <screen x="0" y="23" width="1440" height="877" />
+    <state width="458" height="529" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1600684257747" />
+    <state width="336" height="444" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1600683501478" />
+    <state width="458" height="529" key="GridCell.Tab.0.right" timestamp="1600684257748">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="336" height="529" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1600681746186" />
-    <state width="336" height="444" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1600682865873" />
+    <state width="458" height="529" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1600684257748" />
+    <state width="336" height="444" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1600683501479" />
+    <state x="499" y="159" key="RollbackChangesDialog" timestamp="1600683698438">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="499" y="159" key="RollbackChangesDialog/0.0.1440.900@0.0.1440.900" timestamp="1600683698438" />
     <state x="229" y="89" key="SettingsEditor" timestamp="1600681725448">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
