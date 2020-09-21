@@ -169,3 +169,43 @@ string型の特徴
 	fmt.Println("\"")
 	fmt.Println(`"`)
 ```
+
+## Sec-13 
+  ### Tips
+GoのString<=>intの変換  
+```
+
+```
+
+関数を右クリック> Go to > Declaration or Usage
+
+```
+func Atoi(s string) (int, error) {
+	const fnAtoi = "Atoi"
+
+	sLen := len(s)
+	if intSize == 32 && (0 < sLen && sLen < 10) ||
+		intSize == 64 && (0 < sLen && sLen < 19) {
+		// Fast path for small integers that fit int type.
+		s0 := s
+		if s[0] == '-' || s[0] == '+' {
+			s = s[1:]
+			if len(s) < 1 {
+				return 0, &NumError{fnAtoi, s0, ErrSyntax}
+			}
+		}
+
+		n := 0
+		for _, ch := range []byte(s) {
+			ch -= '0'
+			if ch > 9 {
+				return 0, &NumError{fnAtoi, s0, ErrSyntax}
+			}
+			n = n*10 + int(ch)
+		}
+		if s0[0] == '-' {
+			n = -n
+		}
+		return n, nil
+	}
+```
