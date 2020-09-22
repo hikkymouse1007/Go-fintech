@@ -2,18 +2,36 @@ package main
 
 import "fmt"
 
-//可変長引数
-
 func main() {
-	f := 1.11
-	int_f := int(f)
-	fmt.Printf("%T, %v\n", int_f, int_f)
+	l := []string{"python", "go", "java"}
 
-	m := map[string]int{
-		"Mike":20,
-		"Nancy":24,
-		"Messi":30,
+	for i := 0; i < len(l); i++{
+		fmt.Println(i, l[i])
+	}
+//i: index, v: value
+	for i, v := range l{
+		fmt.Println(i, v)
+	}
+// valueを取り出すとき
+	for _, v := range l{
+		fmt.Println(v)
 	}
 
-	fmt.Printf("%T %v", m, m )
+	m := map[string]int{"apple": 100, "banana": 200}
+// key ,valueを取り出す
+	for k, v := range m{
+		fmt.Println(k, v)
+	}
+// keyのみ
+	for k := range m{
+		fmt.Println(k)
+	}
+// valueのみ
+	for _, v := range m{
+		fmt.Println(v)
+	}
 }
+
+
+
+
