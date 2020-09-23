@@ -465,3 +465,40 @@ success
  file.Read(data)
  fmt.Println(string(data))
 ```
+
+
+## Sec-29
+  ### Tips
+```
+log.Println("logging!")
+log.Printf("%T %v", "test", "test")
+ 
+ //Fatalは実行されるとそこでコードが終了する
+log.Fatalln("error!")
+fmt.Println("ok!")
+
+//　出力
+2020/09/23 22:51:44 logging!
+2020/09/23 22:51:44 string test
+2020/09/23 22:51:44 error!
+
+// os.Openのエラーを出力してみる(エラーハンドリング)
+//file, error :=os.Open("hogehogheohg") 
+ _, err :=os.Open("hogehogheohg") //fileを変数として使わないときは"_"とする
+ if err != nil{
+  log.Fatalln("exit", err)
+ }
+
+// errorを出力 
+2020/09/23 22:56:40 exit open hogehogheohg: no such file or directory
+
+//logfileの出力
+func loggingSettings(logFile string){
+  logfile, _:= os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+  multiLogFile := io.MultiWriter(os.Stdout, logfile)
+  log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
+  log.SetOutput(multiLogFile)
+}
+
+
+```
