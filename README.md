@@ -418,5 +418,50 @@ func main() {
 	}
 }
 
+## Sec-28
+  ### Tips
 
+deferの実行順
+```
+func foo(){
+ defer fmt.Println("world foo")
+
+ fmt.Println("hello foo")
+ 
+}
+
+
+func main() {
+ defer fmt.Println("world")
+
+ foo()
+
+ fmt.Println("hello")
+}
+
+//　出力
+hello foo
+world foo
+hello
+world
+
+ fmt.Println("run")
+ defer fmt.Println("1")
+ defer fmt.Println("2")
+ defer fmt.Println("3")
+ fmt.Println("success")
+
+//出力
+run
+success
+3
+2
+1
+
+ file, _ := os.Open("./lesson.go")
+ // 一連の処理の締めを忘れずに書くことができる
+ defer file.Close()
+ data := make([]byte, 100)
+ file.Read(data)
+ fmt.Println(string(data))
 ```

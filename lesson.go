@@ -1,34 +1,35 @@
 package main
 
 import (
-	"fmt"
-	"time"
+ "fmt"
+ "os"
 )
 
-func getOsName() string{
-	return "mac"
+func foo(){
+ defer fmt.Println("world foo")
+
+ fmt.Println("hello foo")
+ 
 }
 
+
 func main() {
-	// osをswitch内のみで使用する記述
-	switch os := getOsName(); os {
-	case "mac":
-		fmt.Println("Mac")
-	case "Windows":
-		fmt.Println("Windows")
-	default:
-		fmt.Println("Default")
-	}
-
-	t := time.Now()
-	fmt.Println(t.Hour())
-	switch {
-	case t.Hour() < 12:
-		fmt.Println("Morning")
-	case t.Hour() < 24:
-		fmt.Println("Night")
-
-	}
+ //defer fmt.Println("world")
+ //
+ //foo()
+ //
+ //fmt.Println("hello")
+ //fmt.Println("run")
+ //defer fmt.Println("1")
+ //defer fmt.Println("2")
+ //defer fmt.Println("3")
+ //fmt.Println("success")
+ file, _ := os.Open("./lesson.go")
+ // 最後に実行される
+ defer file.Close()
+ data := make([]byte, 100)
+ file.Read(data)
+ fmt.Println(string(data))
 }
 
 
