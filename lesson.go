@@ -1,34 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
+
+func getOsName() string{
+	return "mac"
+}
 
 func main() {
-	l := []string{"python", "go", "java"}
-
-	for i := 0; i < len(l); i++{
-		fmt.Println(i, l[i])
-	}
-//i: index, v: value
-	for i, v := range l{
-		fmt.Println(i, v)
-	}
-// valueを取り出すとき
-	for _, v := range l{
-		fmt.Println(v)
+	// osをswitch内のみで使用する記述
+	switch os := getOsName(); os {
+	case "mac":
+		fmt.Println("Mac")
+	case "Windows":
+		fmt.Println("Windows")
+	default:
+		fmt.Println("Default")
 	}
 
-	m := map[string]int{"apple": 100, "banana": 200}
-// key ,valueを取り出す
-	for k, v := range m{
-		fmt.Println(k, v)
-	}
-// keyのみ
-	for k := range m{
-		fmt.Println(k)
-	}
-// valueのみ
-	for _, v := range m{
-		fmt.Println(v)
+	t := time.Now()
+	fmt.Println(t.Hour())
+	switch {
+	case t.Hour() < 12:
+		fmt.Println("Morning")
+	case t.Hour() < 24:
+		fmt.Println("Night")
+
 	}
 }
 

@@ -368,6 +368,55 @@ Nil
  step into:　関数の中に入る。クリックするごとに1行ごと実行
  step out :
  
-## Sec-21
+## Sec-26
   ### Tips
+rangeで二つのパラメータを取り出すときの方法
+  
+```
+//i: index, v: value
+-       for i, v := range l{
+-               fmt.Println(i, v)
+-       }
+-// valueを取り出すとき
+-       for _, v := range l{
+-               fmt.Println(v)
+-       }
+ m := map[string]int{"apple": 100, "banana": 200}
+-// key ,valueを取り出す
+-       for k, v := range m{
+-               fmt.Println(k, v)
+-       }
+-// keyのみ
+-       for k := range m{
+-               fmt.Println(k)
+-       }
+-// valueのみ
+-       for _, v := range m{
+-               fmt.Println(v)
+
+```
+
  
+## Sec-27
+  ### Tips
+  
+switch内のみで変数を使うとき
+```
+func getOsName() string{
+	return "mac"
+}
+
+func main() {
+	// osをswitch内のみで使用する記述
+	switch os := getOsName(); os {
+	case "mac":
+		fmt.Println("Mac")
+	case "Windows":
+		fmt.Println("Windows")
+	default:
+		fmt.Println("Default")
+	}
+}
+
+
+```
