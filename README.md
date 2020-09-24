@@ -418,6 +418,8 @@ func main() {
 	}
 }
 
+```
+
 ## Sec-28
   ### Tips
 
@@ -500,5 +502,48 @@ func loggingSettings(logFile string){
   log.SetOutput(multiLogFile)
 }
 
+```
+
+
+## Sec-30
+  ### Tips
+  
+errorの処理について
+
+```
+// errorがnilかどうかで処理を分ける
+func Chdir(dir string) error {
+	if e := syscall.Chdir(dir); e != nil {
+		testlog.Open(dir) // observe likely non-existent directory
+		return &PathError{"chdir", dir, e}
+	}
+	if log := testlog.Logger(); log != nil {
+		wd, err := Getwd()
+		if err == nil {
+			log.Chdir(wd)
+		}
+	}
+	return nil
+}
+
+// 100バイト分の配列を作成
+	data := make([]byte, 100)
+	// 100バイト分のlesson.goの中身を読み込む
+	count, err := file.Read(data)
+// Read => GoTo > Declaration
+func (f *File) Read(b []byte) (n int, err error) {
+	if err := f.checkValid("read"); err != nil {
+		return 0, err
+	}
+	n, e := f.read(b)
+	return n, f.wrapErr("read", e)
+}
+
+// errは コードの中で何度も :=　で初期化される
+file, err := os.Open("./lesson.go")
+  ~~~~~~	
+count, err := file.Read(data) //fileのerrのため:=で初期化して上書きできる
+
+err = os.Chdir("test") //ここはosに対する変数errのため初期化できない
 
 ```
