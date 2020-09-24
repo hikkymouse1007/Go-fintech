@@ -1,4 +1,8 @@
 # Go-fintech
+## 参考になるサイト
+- https://godoc.org/
+- https://ashitani.jp/golangtips/index.html
+- http://www.openspc2.org/reibun/Go/1.1.1/
 ## Sec-3
 - go get golang.org/x/tools/cmd/godoc
 - go doc fmt
@@ -561,4 +565,64 @@ defer func() {
 		s := recover()
 		fmt.Println(s)
 	}()
+```
+
+## Sec-32
+  ### Tips
+ 
+Exercise
+配列のsortについて
+http://midori5.hatenablog.com/entry/2017/06/11/194519
+```
+
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	l :=[]int{100, 300, 23, 11, 2, 4, 6, 4}
+	sort.Ints(l)
+	fmt.Println(l[0])
+
+	m := map[string]int{
+		"apple": 200,
+		"banana": 300,
+		"grapes": 150,
+		"orange": 80,
+		"papaya": 500,
+		"kiwi": 90,
+	}
+
+	total := 0
+	for _, v := range m {
+		//fmt.Println(v)
+		total = total + v
+	}
+
+fmt.Println(total)
+}
+
+```
+
+
+## Sec-34
+  ### Tips
+ポインタ
+
+メモリについて
+https://murci.net/archives/319
+
+```
+var n int = 100
+
+// アドレスと値の関係
+fmt.Println(n)     //nの値
+fmt.Println(&n)    //nのアドレス
+fmt.Println(*&n)   //nのアドレスに格納された値
+fmt.Println(&*&n)  //nのアドレスに格納された値のアドレス
+
+
 ```
