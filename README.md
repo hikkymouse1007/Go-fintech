@@ -508,7 +508,7 @@ func loggingSettings(logFile string){
 ## Sec-30
   ### Tips
   
-errorの処理について
+errorハンドリング
 
 ```
 // errorがnilかどうかで処理を分ける
@@ -546,4 +546,19 @@ count, err := file.Read(data) //fileのerrのため:=で初期化して上書き
 
 err = os.Chdir("test") //ここはosに対する変数errのため初期化できない
 
+```
+
+## Sec-31
+  ### Tips
+
+panicとrecover
+基本的にはこれらを使わないコード実装を推奨
+
+```
+panic("Unable to connect database!")
+
+defer func() {
+		s := recover()
+		fmt.Println(s)
+	}()
 ```
