@@ -615,6 +615,10 @@ fmt.Println(total)
 メモリについて
 https://murci.net/archives/319
 
+図解
+
+<img width="827" alt="スクリーンショット 2020-09-24 23 36 11" src="https://user-images.githubusercontent.com/54907440/94161742-f83acb00-fec0-11ea-963d-9531de0b4058.png">
+
 ```
 var n int = 100
 
