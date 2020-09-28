@@ -2,34 +2,36 @@ package main
 
 import "fmt"
 
-func one(x *int){
-	// 引数のアドレスのメモリの中身を1にする
-	*x = 1
-}
+func main() {
+	s := make([]int, 0)
+	fmt.Printf("%T\n", s)
 
-func main()  {
-	var n int = 100
-	one(&n)
+	m := make(map[string]int)
+	fmt.Printf("%T\n", m)
 
-	fmt.Println(n)
-	fmt.Println(&n)
-	fmt.Println(*&n)
-	fmt.Println(&*&n)
+	ch := make(chan int)
+	fmt.Printf("%T\n", ch)
 
-	/*var n int = 100
-	fmt.Println(n)
+	var p *int = new(int)
+	fmt.Printf("%T\n", p)
 
-	// nのメモリアドレスを表示
-	fmt.Println(&n)
+	var st = new(struct{})
+	fmt.Printf("%T\n", st)
 
-	// nのメモリアドレスを代入
-	var p *int = &n
 
-	//　nのメモリアドレスを表示
+
+	/*
+	var p *int = new(int)
 	fmt.Println(p)
-
-	//nのメモリアドレスに格納されている値を表示
+	fmt.Println(*p) //初期値は0
+	*p++
 	fmt.Println(*p)
-	*/
-}
 
+
+	var p2 *int
+	fmt.Println(p2) //nil
+	*p2++ 			// panic
+	fmt.Println(*p2)
+	 */
+
+}

@@ -621,12 +621,46 @@ https://murci.net/archives/319
 
 ```
 var n int = 100
-
 // アドレスと値の関係
+
 fmt.Println(n)     //nの値
 fmt.Println(&n)    //nのアドレス
 fmt.Println(*&n)   //nのアドレスに格納された値
 fmt.Println(&*&n)  //nのアドレスに格納された値のアドレス
 
 
+```
+
+## Sec-35
+  ### Tips
+makeとnewについて
+- make: ポインタを返さない
+- new : ポインタを返す
+
+```
+
+s := make([]int, 0)
+	fmt.Printf("%T\n", s) // []int
+
+
+	m := make(map[string]int)
+	fmt.Printf("%T\n", m) // map[string]int
+
+
+	ch := make(chan int)
+	fmt.Printf("%T\n", ch) // chan int
+
+	var p *int = new(int)  
+	fmt.Printf("%T\n", p)  // *int
+
+	var st = new(struct{})
+	fmt.Printf("%T\n", st) // *struct {}
+
+// メモリにアドレス領域のみ確保したいとき　
+var p *int = new(int)
+	fmt.Println(p)
+
+// p2はnil
+var p2 *int
+	fmt.Println(p2)
 ```
