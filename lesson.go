@@ -2,36 +2,54 @@ package main
 
 import "fmt"
 
+type Vertex struct {
+	X int
+	Y int
+	S string
+}
+
+func changeVertex(v Vertex)  {
+	v.X = 1000
+}
+
+func changeVertex2(v *Vertex)  {
+	//(*v).X = 1000
+	v.X = 1000 // structはvを*vとして自動的に変換
+}
+
 func main() {
-	s := make([]int, 0)
-	fmt.Printf("%T\n", s)
+	v := Vertex{1, 2, "test"}
+	changeVertex(v)
+	fmt.Println(v)
 
-	m := make(map[string]int)
-	fmt.Printf("%T\n", m)
-
-	ch := make(chan int)
-	fmt.Printf("%T\n", ch)
-
-	var p *int = new(int)
-	fmt.Printf("%T\n", p)
-
-	var st = new(struct{})
-	fmt.Printf("%T\n", st)
+	v2 := &Vertex{1, 2, "test"}
+	changeVertex2(v2)
+	fmt.Println(v2)
 
 
+	/*v := Vertex{X:1, Y:2}
+	fmt.Println(v.X, v.Y)
+	v.X = 100
+	fmt.Println(v.X)
 
-	/*
-	var p *int = new(int)
-	fmt.Println(p)
-	fmt.Println(*p) //初期値は0
-	*p++
-	fmt.Println(*p)
+	v2 := Vertex{X:1}
+	fmt.Println(v2) //Y:0
 
+	v3 := Vertex{1, 2, "test"}
+	fmt.Println(v3) // X:1, Y:2, S:"test
 
-	var p2 *int
-	fmt.Println(p2) //nil
-	*p2++ 			// panic
-	fmt.Println(*p2)
+	v4 := Vertex{}
+	fmt.Printf("%T %v\n", v4, v4)
+
+	var v5 Vertex
+	fmt.Printf("%T %v\n", v5, v5)
+
+	v6 := new(Vertex)
+	fmt.Printf("%T %v\n", v6, v6)
+
+	v7 := &Vertex{}
+	fmt.Printf("%T %v\n", v7, v7)
 	 */
 
+	
 }
