@@ -790,3 +790,37 @@ func main() {
 
 ```
 
+
+## Sec-39
+  ### Tips
+Vimコマンド 
+- 置換
+```
+:%s/対象文字列/置換する文字列/g
+=> enter
+```
+ 
+コンストラクタ
+golang document :https://golang.org/pkg/math/rand/#New
+
+```
+func New
+
+func New(src Source) *Rand
+
+New returns a new Rand that uses random values from src to generate other random values.
+```
+
+```
+func New(x, y int) *Vertex{
+	return &Vertex{x, y}
+}
+
+func main() {
+	//v := Vertex{3, 4}
+	v := New(3, 4) // 
+	v.Scale(10)
+	fmt.Println(v.Area())
+}
+```
+
