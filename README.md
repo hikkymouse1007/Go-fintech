@@ -882,3 +882,37 @@ func main() {
 	fmt.Println(myInt.Double()) //20
 }
 ```
+
+
+## Sec-42
+  ### Tips
+ インターフェース
+ 
+```
+// メゾッドのひな型のようなもの
+type Human interface {
+	Say()
+}
+
+type Person struct {
+	Name string
+}
+
+
+// PersonはSay()をもつ
+func (p Person) Say(){
+	fmt.Println(p.Name)
+}
+
+// Person
+func (p *Person) Say(){
+    p.Name = "Mr." + p.Name
+	fmt.Println(p.Name)
+}
+
+// interfaceで指定したメゾッドが必要になる
+func main() {
+	var mike Human = Person{"Mike"}
+	mike.Say()
+}
+```

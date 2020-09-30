@@ -2,15 +2,26 @@ package main
 
 import "fmt"
 
-type MyInt int
-
-func (i MyInt) Double() int{
-	fmt.Printf("%T %v\n", i, i)
-	fmt.Printf("%T %v\n", 1, 1)
-	return int(i * 2)
+type Human interface {
+	Say()
 }
 
+type Person struct {
+	Name string
+}
+
+func (p Person) Say(){
+	fmt.Println(p.Name)
+}
+
+//func (p *Person) Say(){
+//	p.Name = "Mr." + p.Name
+//	fmt.Println(p.Name)
+//}
+
 func main() {
-	myInt := MyInt(10)
-	fmt.Println(myInt.Double())
+	var mike Human = Person{"Mike"}
+	mike.Say()
+	//var mike Human = &Person{"Mike"}
+	//mike.Say()
 }
