@@ -824,3 +824,39 @@ func main() {
 }
 ```
 
+## Sec-40
+  ### Tips
+Embedded
+構造体の埋め込み
+クラスの継承のようなもの
+参考記事: https://qiita.com/k-penguin-sato/items/62dfe0f93f56e4bf9157#structs%E6%A7%8B%E9%80%A0%E4%BD%93
+
+```
+
+// Vertexを埋め込み(embedded)
+type Vertex3D struct {
+	Vertex
+	z int
+}
+
+func (v Vertex3D) Area3D()  int{
+	return v.x * v.y * v.z
+}
+
+func (v *Vertex3D) Scale3D(i int) {
+	v.x = v.x * i
+	v.y = v.y * i
+	v.z = v.z * i
+}
+
+func New(x, y, z int) *Vertex3D{
+	// Vertexを宣言
+    return &Vertex3D{Vertex{x, y}, z}
+}
+
+func main() {
+	v := New(3, 4, 5)
+	v.Scale3D(10)
+	fmt.Println(v.Area3D())
+}
+```
