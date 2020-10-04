@@ -69,7 +69,7 @@ vimtutor	チュートリアル
 :help	ヘルプ
 ```
 -  Run go : Ctrl + R
-- 
+
 - GoFile structure
 ```
 package project
@@ -995,7 +995,95 @@ https://qiita.com/tenntenn/items/e04441a40aeb9c31dbaf
 参考:
 https://www.weblio.jp/content/%E3%83%80%E3%83%83%E3%82%AF%E3%82%BF%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0 
 
+
+
+## Sec-44
+  ### Tips
+タイプアサーション
+インターフェースをintやstringに変換する
+
+https://go-tour-jp.appspot.com/methods/15
+"型アサーション は、インターフェースの値の基になる具体的な値を利用する手段を提供します。
+
+```
+t := i.(T)
+```
+この文は、インターフェースの値 i が具体的な型 T を保持し、基になる T の値を変数 t に代入することを主張します。
+
+i が T を保持していない場合、この文は panic を引き起こします。
+
+インターフェースの値が特定の型を保持しているかどうかを テスト するために、型アサーションは2つの値(基になる値とアサーションが成功したかどうかを報告するブール値)を返すことができます。
+
+```
+t, ok := i.(T)
 ```
 
+i が T を保持していれば、 t は基になる値になり、 ok は真(true)になります。
+
+そうでなければ、 ok は偽(false)になり、 t は型 T のゼロ値になり panic は起きません。
+
+この構文と map から読み取る構文との類似点に注意してください。"
+
+```
+func do(i interface{}){
+	ii := i.(int) //interface型をint型へ変換
+	ii *=  2
+	fmt.Println(ii)
+}
+
+func main() {
+	var i interface{} = 10 // interface型
+	do(i)
+}
+=> 20
+```
+
+文字列の場合
+
+```
+func do(i interface{}){
+	ss := i.(string)
+	fmt.Println(ss + "!")
+}
+
+func main() {
+	do("Mike")
+}
+=> Mike!
+``````
+
+swich type文
+
+```
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Println(v * 2)
+	case string:
+		fmt.Println(v + "!")
+	default:
+		fmt.Printf("I don't know %T\n", v)
+	}
+}
 
 
+func main() {
+	do(10)
+	do("Mike")
+	do(true)
+}
+
+=>
+20
+Mike!
+I don't know bool
+
+```
+
+Type Conversion(キャスト)
+
+```
+var i int = 10
+	ii := float64(10)
+	fmt.Println(i, ii)
+```
