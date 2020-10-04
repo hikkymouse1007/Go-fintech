@@ -3,25 +3,39 @@ package main
 import "fmt"
 
 type Human interface {
-	Say()
+	Say() string
 }
 
 type Person struct {
 	Name string
 }
 
-func (p Person) Say(){
-	fmt.Println(p.Name)
+type Dog struct {
+	Name string
 }
 
-//func (p *Person) Say(){
-//	p.Name = "Mr." + p.Name
-//	fmt.Println(p.Name)
-//}
+
+func (p *Person) Say() string {
+	p.Name = "Mr." + p.Name
+	fmt.Println(p.Name)
+	return p.Name
+}
+
+func DriveCar(human Human){
+	if human.Say() == "Mr.Mike" {
+		fmt.Println("Run")
+	} else {
+		fmt.Println("Get out")
+	}
+}
 
 func main() {
-	var mike Human = Person{"Mike"}
-	mike.Say()
+	var mike Human = &Person{"Mike"}
+	var x Human = &Person{"X"}
+	//var dog Dog = &Dog{"hachi"}
+	DriveCar(mike)
+	DriveCar(x)
+	//DriveCar(dog)   //Dog does not implement Human (missing Say method)
 	//var mike Human = &Person{"Mike"}
 	//mike.Say()
 }

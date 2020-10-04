@@ -884,10 +884,12 @@ func main() {
 ```
 
 
-## Sec-42
+## Sec-43
   ### Tips
  インターフェース
- 
+ あるクラス(構造体)にメゾッドを実装することを保証する
+ "ふるまいの共通化"
+ 参考記事: https://www.gixo.jp/blog/5159/
 ```
 // メゾッドのひな型のようなもの
 type Human interface {
@@ -905,7 +907,7 @@ func (p Person) Say(){
 }
 
 // Person
-func (p *Person) Say(){
+func (p *Person) Say(){ // Say()を宣言したので、Humanインターフェースを実装したことになる
     p.Name = "Mr." + p.Name
 	fmt.Println(p.Name)
 }
@@ -914,5 +916,86 @@ func (p *Person) Say(){
 func main() {
 	var mike Human = Person{"Mike"}
 	mike.Say()
+
+	//var mike Human = &Person{"Mike"} //アドレスの値として受け取る  
+	//mike.Say()
+}
+
+// 構造体Dog
+type Dog struct {
+	Name string
+}
+
+
+func (p *Person) Say() string {
+	p.Name = "Mr." + p.Name
+	fmt.Println(p.Name)
+	return p.Name
+}
+
+func DriveCar(human Human){
+	if human.Say() == "Mr.Mike" {
+		fmt.Println("Run")
+	} else {
+		fmt.Println("Get out")
+	}
+}
+
+func main() {
+	var mike Human = &Person{"Mike"}
+	var x Human = &Person{"X"}
+	var dog Dog = &Dog{"hachi"}
+	DriveCar(mike)
+	DriveCar(x)
+
+    // DogインスタンスはHumanインターフェースを持たないのでDriveCarは実行できない
+	DriveCar(dog)   //Dog does not implement Human (missing Say method)
+	//var mike Human = &Person{"Mike"}
+	//mike.Say()
+```
+
+ダックタイピング:
+Go言語にはインタフェースがある。
+明示的に実装しなくてもインタフェースが定義するメソッドをすべて実装していれば、
+そのインタフェースを実装していることになる（ダックタイピング）。
+```
+package main
+
+import "fmt"
+
+type Person struct {
+    FirstName string
+    LastName  string
+}
+
+func (p *Person) Name() string {
+    return p.FirstName + " " + p.LastName
+}
+
+type Named interface {
+    Name() string
+}
+
+func printName(named Named) {
+    fmt.Println(named.Name())
+}
+
+func main() {
+    person := &Person{"Tarou", "Yamada"}
+    printName(person)
 }
 ```
+https://qiita.com/tenntenn/items/e04441a40aeb9c31dbaf
+
+"静的型付け言語であるJavaやC#の概念で例えると、
+オブジェクトがあるインタフェースのすべてのメソッドを持っているならば、
+たとえそのクラスがそのインタフェースを宣言的に実装していなくとも、
+オブジェクトはそのインタフェースを実行時に実装しているとみなせる、
+ということである。"
+参考:
+https://www.weblio.jp/content/%E3%83%80%E3%83%83%E3%82%AF%E3%82%BF%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0 
+
+```
+
+
+
