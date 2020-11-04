@@ -4,28 +4,14 @@ import (
 	"fmt"
 )
 
-type UserNotFound struct {
-	Username string
+type Vertex struct{
+	X, Y int
 }
 
-func (e *UserNotFound) Error() string{
-	/*return e.Username*/
-	return fmt.Sprintf("User not found: %v", e.Username)
+func (v Vertex) String() string {
+	return fmt.Sprintf("X is %v! Y is %v!", v.X, v.Y)
 }
-
-func myFunc() error {
-	// Something wrong
-	ok := false
-	if ok {
-		return nil
-	}
-	return &UserNotFound{Username: "mike"}
+func main(){
+	v := Vertex{3, 4}
+	fmt.Println(v)
 }
-
-func main() {
-	if err := myFunc(); err != nil {
-		fmt.Println(err)
-	}
-}
-
-
