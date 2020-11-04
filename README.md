@@ -1139,3 +1139,38 @@ func main()  {
 
 => "My name is Mike.
 ```
+## Sec-46
+  ### Tips
+カスタムエラー
+
+カスタムエラーの引数のタイプには*をつけて、
+出力する際には&をつける。
+=> エラーの内容に違いが出てしまうため。
+
+```
+type UserNotFound struct {
+	Username string
+}
+
+func (e *UserNotFound) Error() string{
+	/*return e.Username*/
+	return fmt.Sprintf("User not found: %v", e.Username)
+}
+
+func myFunc() error {
+	// Something wrong
+	ok := false
+	if ok {
+		return nil
+	}
+	return &UserNotFound{Username: "mike"}
+}
+
+func main() {
+	if err := myFunc(); err != nil {
+		fmt.Println(err)
+	}
+}
+
+=> User not found: mike
+```
