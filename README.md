@@ -1219,3 +1219,44 @@ func main(){
 	fmt.Println(v)
 }
 ```
+
+## Sec-49
+### Tips
+goroutine
+軽量のスレッド、並列処理のこと。
+https://qiita.com/ruiu/items/dba58f7b03a9a2ffad65
+> wg.Done()はdefer wg.Done()として関数の先頭に書いてしまうのが良いとされています。
+  deferは関数の呼び出しをリストで保存して、関数が終了したときに順次呼び出します。
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func goroutine(s string, wg *sync.WaitGroup)  { //　sync.WaitGroupは複数のgoroutineの完了を待つための値
+        defer wg.Done()
+	for i := 0; i < 5; i++{
+		//time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+    // wg.Done()	
+}
+
+func normal(s string){
+	for i := 0; i < 5; i++{
+		//time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+}
+
+func main()  {
+	var wg sync.WaitGroup
+	wg.Add(1)                  // wgに一つの並列処理があることを伝える           
+	go goroutine("world", &wg) // go:並列処理の宣言 何もしないと処理が終了しなくてもプログラムが終わることがある
+	normal("hello")
+	//time.Sleep(2000 * time.Millisecond)
+	wg.Wait()                  // wgがDone()するまで待つ
+}
+```
