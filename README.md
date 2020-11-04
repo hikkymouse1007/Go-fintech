@@ -1260,3 +1260,15 @@ func main()  {
 	wg.Wait()                  // wgがDone()するまで待つ
 }
 ```
+## Sec-50
+### Tips
+channel
+
+mainとgoroutineの間でデータを
+やり取りするための仕組み
+![channel](https://user-images.githubusercontent.com/54907440/98129473-806ab200-1efc-11eb-8fb4-98ede63895b1.png)
+
+2つのgoroutineに１つのチャネル
+2つのチャネルを使うこともできる。
+(一つはint, もう一つはstringなど)
+![channel2](https://user-images.githubusercontent.com/54907440/98131055-43072400-1efe-11eb-8a27-0b635f7a8a57.png)
