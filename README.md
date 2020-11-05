@@ -1223,6 +1223,7 @@ func main(){
 ## Sec-49
 ### Tips
 goroutine
+
 軽量のスレッド、並列処理のこと。
 https://qiita.com/ruiu/items/dba58f7b03a9a2ffad65
 > wg.Done()はdefer wg.Done()として関数の先頭に書いてしまうのが良いとされています。
@@ -1295,6 +1296,7 @@ func main()  {
 ## Sec-52
 ### Tips
 channelのrangeとclose
+
 バッファありとバッファなしチャネルの違い
 https://program.sakaiboz.com/golang/goroutine/unbuffered-channel-and-buffered-channel/
 ```
@@ -1322,6 +1324,7 @@ func main()  {
 ## Sec-53
 ### Tips
 producerとconsumer
+
 producerのgoroutineの処理結果を
 consumerのgoroutineで処理するというイメージ。
 ![producer_consumer](https://user-images.githubusercontent.com/54907440/98256359-d0f81300-1fc1-11eb-93b3-cb12288dd935.png)
