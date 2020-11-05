@@ -1325,7 +1325,7 @@ producerとconsumer
 producerのgoroutineの処理結果を
 consumerのgoroutineで処理するというイメージ。
 ![producer_consumer](https://user-images.githubusercontent.com/54907440/98256359-d0f81300-1fc1-11eb-93b3-cb12288dd935.png)
-
+2つのgoroutineを用意している
 ```
 func producer(ch chan int, i int)  {
 	ch <- i * 2
