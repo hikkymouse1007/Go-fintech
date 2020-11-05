@@ -1292,3 +1292,68 @@ func main()  {
 	}
 }
 ```
+## Sec-52
+### Tips
+channelのrangeとclose
+バッファありとバッファなしチャネルの違い
+https://program.sakaiboz.com/golang/goroutine/unbuffered-channel-and-buffered-channel/
+```
+func goroutine1(s []int, c chan int){
+	sum := 0
+	for _, v := range s{
+		sum += v
+		c <- sum
+	}
+	close(c) //レンジに値がなくなった時にチャネルを閉じる、閉じないとエラー
+}
+
+func main()  {
+	s := []int{1, 2, 3, 4, 5}
+	c := make(chan int, len(s))
+	go goroutine1(s, c)
+	for i := range c{
+		fmt.Println(i)
+	}
+}
+```
+![range_and_close](https://user-images.githubusercontent.com/54907440/98254492-b2911800-1fbf-11eb-8e82-c357b997e65f.png)
+
+
+## Sec-53
+### Tips
+producerとconsumer
+producerのgoroutineの処理結果を
+consumerのgoroutineで処理するというイメージ。
+![producer_consumer](https://user-images.githubusercontent.com/54907440/98256359-d0f81300-1fc1-11eb-93b3-cb12288dd935.png)
+
+```
+func producer(ch chan int, i int)  {
+	ch <- i * 2
+}
+
+func consumer(ch chan int, wg *sync.WaitGroup)  {
+	for i := range ch{
+		fmt.Println("process", i * 1000)
+		wg.Done()
+	}
+	fmt.Println("#############")
+}
+
+func main()  {
+	var wg sync.WaitGroup
+	ch := make(chan int)
+
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go producer(ch, i)
+	}
+
+	go consumer(ch, &wg)
+	wg.Wait()
+	close(ch)
+	time.Sleep(2 * time.Second)
+	fmt.Println("Done")
+}
+
+```
+
