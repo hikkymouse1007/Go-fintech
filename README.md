@@ -1272,3 +1272,23 @@ mainとgoroutineの間でデータを
 2つのチャネルを使うこともできる。
 (一つはint, もう一つはstringなど)
 ![channel2](https://user-images.githubusercontent.com/54907440/98131055-43072400-1efe-11eb-8a27-0b635f7a8a57.png)
+
+## Sec-51
+### Tips
+Buffered Channels
+rangeでchannelを呼び出すときは、
+closeでchannelを閉じないとエラーが出る
+```
+func main()  {
+	ch := make(chan int, 2)
+	ch <- 100
+	fmt.Println(len(ch))
+	ch <- 200
+	fmt.Println(len(ch))
+	close(ch) //rangeで呼び出すときはcloseが必要
+
+	for c := range ch{
+		fmt.Println(c)
+	}
+}
+```
