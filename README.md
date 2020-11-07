@@ -1464,7 +1464,7 @@ packet from 1
 
 ```
 
-## Sec-55
+## Sec-56
 ### Tips
 Default Selection and for break
 https://tour.golang.org/concurrency/6
@@ -1545,4 +1545,100 @@ func main() {
 	    }
 	fmt.Println("#############")
 }
+```
+
+## Sec-57
+### Tips
+sync.Mutex
+二つのgoroutineが一つの変数に同じ数字を入れてしまうと
+エラーが出ることがある
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+type Counter struct{
+	v map[string]int
+	mux sync.Mutex
+}
+
+func (c *Counter) Inc(key string){
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	c.v[key]++
+
+}
+
+func main() {
+	c := make(map[string]int)
+	go func() {
+		for i := 0; i < 10; i++{
+			c["key"] += 1
+		}
+	}()
+	go func() {
+		for i := 0; i < 10; i++{
+			c["key"] += 1
+		}
+	}()
+	time.Sleep(1 * time.Second)
+	fmt.Println(c, c["key"])
+}
+
+//出力
+map[key:20] 20
+
+```
+sync.Mutexを使うことで片方のgoroutineが書き込んでいるときは
+もう片方のgoroutineをブロックすることができる。
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+type Counter struct{
+	v map[string]int
+	mux sync.Mutex
+}
+
+func (c *Counter) Inc(key string){
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	c.v[key]++
+}
+
+func (c *Counter) Value(key string) int{
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	return c.v[key]
+}
+
+func main() {
+	//c := make(map[string]int)
+	c := Counter{v: make(map[string]int)}
+	go func() {
+		for i := 0; i < 10; i++{
+			//c["key"] += 1
+			c.Inc("Key")
+		}
+	}()
+	go func() {
+		for i := 0; i < 10; i++{
+			//c["key"] += 1
+			c.Inc("Key")
+		}
+	}()
+	time.Sleep(1 * time.Second)
+	fmt.Println(c, c.Value("Key"))
+}
+// 出力
+{map[Key:20] {0 0}} 20
 ```
