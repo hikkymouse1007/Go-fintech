@@ -2,36 +2,35 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
 )
 
-
-func producer(ch chan int, i int)  {
-	ch <- i * 2
+func goroutine1(ch chan string){
+	for {
+		ch <- "packet from 1"
+		time.Sleep(1 * time.Second)
+	}
 }
 
-func consumer(ch chan int, wg *sync.WaitGroup)  {
-	for i := range ch{
-
-		fmt.Println("process", i * 1000)
-		wg.Done() //closeしないと次のchannelを待っていて、for文が実行待ちになってしまう
+func goroutine2(ch chan string){
+	for {
+		ch <- "packet from 2"
+		time.Sleep(1 * time.Second)
 	}
-	fmt.Println("#############") //closeしないとここは実行されない
 }
 
 func main()  {
-	var wg sync.WaitGroup
-	ch := make(chan int)
-
-	for i := 0; i < 10; i++ {
-		wg.Add(1) //channelを生成
-		go producer(ch, i)
+	c1 := make(chan string)
+	c2 := make(chan string)
+	go goroutine1(c1)
+	go goroutine2(c2)
+	for {
+		select {
+		case msg1 := <-c1:
+			fmt.Println(msg1)
+		case msg2 := <-c2:
+			fmt.Println(msg2)
+		}
 	}
 
-	go consumer(ch, &wg)
-	wg.Wait()
-	close(ch) // 10回実行後もconsumerのgoroutineがchannelを取ろうと待ってしまうためにcloseする
-	time.Sleep(2 * time.Second)
-	fmt.Println("Done")
 }
