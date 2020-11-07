@@ -1464,6 +1464,85 @@ packet from 1
 
 ```
 
+## Sec-55
+### Tips
+Default Selection and for break
+https://tour.golang.org/concurrency/6
+```
+package main
 
+import (
+	"fmt"
+	"time"
+)
 
+func main() {
+	tick := time.Tick(100 * time.Millisecond)
+	boom := time.After(500 * time.Millisecond)
+	for {
+		select {
+		case t := <-tick:
+			fmt.Println("tick.", t)
+        case b := <-boom:
+			fmt.Println("BOOM!", b)
+            // breakしてもtickが回り続けてしまう
+			return
+		default:
+			fmt.Println("    .")
+			time.Sleep(50 * time.Millisecond)
+		}
+	}
+    fmt.Println("#############")
+}
 
+// Go To Declaration or Usage
+// tick.go
+func Tick(d Duration) <-chan Time {
+	if d <= 0 {
+		return nil
+	}
+	return NewTicker(d).C
+}
+
+//　出力
+    .
+    .
+    .
+
+tick. 2020-11-08 00:20:38.322697 +0900 JST m=+0.104692781
+    .
+tick. 2020-11-08 00:20:38.418931 +0900 JST m=+0.200926229
+    .
+    .
+tick. 2020-11-08 00:20:38.520812 +0900 JST m=+0.302805871
+    .
+    .
+tick. 2020-11-08 00:20:38.621455 +0900 JST m=+0.403446917
+    .
+    .
+BOOM! 2020-11-08 00:20:38.719839 +0900 JST m=+0.501829768
+
+```
+
+caseをブレイクしてループ後の処理をしたい場合はOuterloopを使う
+(名前はなんでも可能、Name:と break Nameの組み合わせを宣言する)
+```
+func main() {
+	tick := time.Tick(100 * time.Millisecond)
+	boom := time.After(500 * time.Millisecond)
+	OuterLoop:
+	    for {
+		    select {
+		    case <-tick:
+		    	fmt.Println("tick.")
+	    	case <-boom:
+		    	fmt.Println("BOOM!")
+		    	break OuterLoop
+		    default:
+		    	fmt.Println("    .")
+		    	time.Sleep(50 * time.Millisecond)
+		    }
+	    }
+	fmt.Println("#############")
+}
+```
