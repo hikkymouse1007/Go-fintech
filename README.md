@@ -1787,3 +1787,97 @@ func main() {
 
 
 ```
+
+# Sec-62
+testing
+https://golang.org/pkg/testing/
+ユニットテストファイルは
+テストするファイルと同じ階層にテストファイルを置く。
+名前は以下のようにする。
+file_test.go
+filename_test.go
+```
+── main.go
+├── mylib
+│   ├── human.go
+│   ├── math.go
+│   ├── math_test.go
+│   └── under
+│       └── hello.go
+```
+
+```
+// math.go
+package mylib
+
+func Average(s []int)int  {
+	total := 0
+	for _, i := range s{
+		total += i
+	}
+	return int(total/len(s))
+}
+
+
+// math_test.go
+package mylib
+
+import "testing"
+
+var Debug bool = true // デバッグモード
+
+func TestAverage(t *testing.T) {
+	if Debug{
+		t.Skip("Skip Reason") //デバッグならスキップ
+	}
+
+	v := Average([]int{1, 2, 3, 4, 5, 6 , 7})
+	if v != 3{
+		t.Error("Expected 3, got", v)
+	}
+}
+
+// スキップの実行
+go test -v ./...                                                                                                                   
+?   	awesomeProject	[no test files]
+=== RUN   TestAverage
+    TestAverage: math_test.go:9: Skip Reason
+--- SKIP: TestAverage (0.00s)
+PASS
+ok  	awesomeProject/mylib	(cached)
+?   	awesomeProject/mylib/under	[no test files]
+```
+
+テストの実行
+- ターミナルで実行
+```
+awesomeProject/ $ go test ./...                                                                                                                      
+?   	awesomeProject	[no test files]
+ok  	awesomeProject/mylib	0.008s
+?   	awesomeProject/mylib/under	[no test files]
+awesomeProject/ $ go test -v ./...                                                                                                                   
+?   	awesomeProject	[no test files]
+=== RUN   TestAverage
+--- PASS: TestAverage (0.00s)
+PASS
+ok  	awesomeProject/mylib	(cached)
+?   	awesomeProject/mylib/under	[no test files]
+
+// Fail
+$ go test -v ./...                                                                                                                   
+?   	awesomeProject	[no test files]
+=== RUN   TestAverage
+    TestAverage: math_test.go:8: Expected 3, got 4
+--- FAIL: TestAverage (0.00s)
+FAIL
+FAIL	awesomeProject/mylib	0.010s
+?   	awesomeProject/mylib/under	[no test files]
+FAIL
+```
+
+- golandでの実行
+右上のgo > edit configuration > + > Go test > naming
+
+Unitテストをもっとしっかり実行したい場合は
+GinkgoやGomegaなどがある
+https://onsi.github.io/ginkgo/
