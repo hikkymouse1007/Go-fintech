@@ -1734,3 +1734,56 @@ func Hello() {
 }
 
 ```
+
+# Sec-61
+PublicとPrivate
+ライブラリはpackageディレクトリから呼び出すため、
+ファイル名は何でも良い。
+
+Public:
+packageからmainに呼び出す変数、クラス、関数は
+必ずキャピタルで定義する。
+Private:
+ライブラリ内で使用する変数、クラス、関数は通常通り
+小文字で定義する。
+```
+// human.go
+package mylib
+
+import "fmt"
+
+var Public string = "Public"
+var private string = "private"
+
+type Person struct {
+	Name string
+	Age int
+}
+
+func Say(){
+	fmt.Println("Human!")
+}
+
+
+// main.go
+package main
+
+import (
+	"awesomeProject/mylib"
+	"awesomeProject/mylib/under"
+	"fmt"
+)
+
+func main() {
+	s := []int{1, 2, 3, 4, 5}
+	fmt.Println(mylib.Average(s))
+
+	mylib.Say()
+	under.Hello()
+	person := mylib.Person{Name: "Mike", Age: 20}
+	fmt.Println(person)
+    //fmt.Println(mylib.private) 実行できない
+}
+
+
+```
