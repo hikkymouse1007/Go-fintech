@@ -1,8 +1,26 @@
 package mylib
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 var Debug bool = true
+
+func Example() {
+	v := Average([]int{1, 2, 3, 4, 5, 6 , 7})
+	fmt.Println(v)
+}
+
+func ExampleAverage() {
+	v := Average([]int{1, 2, 3, 4, 5, 6 , 7})
+	fmt.Println(v)
+}
+
+func ExamplePerson2_Say() {
+	p := Person2{"Mike", 20}
+	p.Say()
+}
 
 func TestAverage(t *testing.T) {
 	if Debug{

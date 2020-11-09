@@ -1994,3 +1994,132 @@ import (
 
 vgoというパッケージ管理システムが開発中。
 https://godoc.org/golang.org/x/vgo
+
+# Sec-65
+godoc
+
+docコメントを追加して、ローカルサーバでgodocを
+開くことができる。
+
+```
+// math.go
+
+//　packageの真上にコメントをする
+/*
+milib is my special library
+*/
+package mylib
+
+// Average returns the average of a series of numbers
+func Average(s []int) int {
+	total := 0
+	for _, i := range s {
+		total += i
+	}
+	return int(total / len(s))
+}
+
+// human.go
+package mylib
+
+import "fmt"
+
+var Public string = "Public"
+var private string = "private"
+
+type Person struct {
+	// Name
+	Name string
+	// Age
+	Age int
+}
+
+func Say(){
+	fmt.Println("Human!")
+}
+
+```
+
+ローカルでのgodoc実行コマンド
+```
+godoc -http:=6060
+```
+
+関数にExampleを追加する
+```
+// math.go
+/*
+mylib is my special library
+*/
+package mylib
+
+import "fmt"
+
+type Person2 struct {
+	//Name
+	Name string
+	//Age
+	Age int
+}
+
+func (p *Person2) Say(){
+	fmt.Println("Person2")
+}
+
+// Average returns the average of a series of numbers
+func Average(s []int) int {
+	total := 0
+	for _, i := range s {
+		total += i
+	}
+	return int(total / len(s))
+}
+
+
+// math_test.go
+package mylib
+
+import (
+	"fmt"
+	"testing"
+)
+
+var Debug bool = true
+
+func Example() {
+	v := Average([]int{1, 2, 3, 4, 5, 6 , 7})
+	fmt.Println(v)
+}
+
+func ExampleAverage() {
+	v := Average([]int{1, 2, 3, 4, 5, 6 , 7})
+	fmt.Println(v)
+}
+
+func ExamplePerson2_Say() {
+	p := Person2{"Mike", 20}
+	p.Say()
+}
+
+func TestAverage(t *testing.T) {
+	if Debug{
+		t.Skip("Skip Reason")
+	}
+
+	v := Average([]int{1, 2, 3, 4, 5, 6 , 7})
+	if v != 3{
+		t.Error("Expected 3, got", v)
+	}
+}
+```
+ドキュメントの反映
+![スクリーンショット 2020-11-10 0 12 22](https://user-images.githubusercontent.com/54907440/98560640-51cd4c80-22eb-11eb-9c48-f12567506a33.png)
+![スクリーンショット 2020-11-10 0 15 33](https://user-images.githubusercontent.com/54907440/98560633-50038900-22eb-11eb-9d38-10222b690712.png)
+![スクリーンショット 2020-11-10 0 16 54](https://user-images.githubusercontent.com/54907440/98560628-4da12f00-22eb-11eb-8a96-234e702a3de2.png)
+![スクリーンショット 2020-11-10 0 24 04](https://user-images.githubusercontent.com/54907440/98560608-4712b780-22eb-11eb-98d5-366204c51218.png)
+![スクリーンショット 2020-11-10 0 23 57](https://user-images.githubusercontent.com/54907440/98560613-49751180-22eb-11eb-8b2c-f48ac724c7da.png)
+![スクリーンショット 2020-11-10 0 17 04](https://user-images.githubusercontent.com/54907440/98560619-4bd76b80-22eb-11eb-8ec9-344a9fd5f1b3.png)
+
+ドキュメントの書き方の参考はsdkの中などを
+見ると良い。
+
