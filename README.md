@@ -1881,3 +1881,50 @@ FAIL
 Unitテストをもっとしっかり実行したい場合は
 GinkgoやGomegaなどがある
 https://onsi.github.io/ginkgo/
+
+# Sec-63
+gofmt
+元のコード
+```
+package mylib
+
+func Average(s          []int)int            {
+	total := 0
+	for _, i := range s{
+		total+=i
+	}
+	return int(total        /     len(   s   ))
+}
+
+```
+
+gofmtを実行
+=> 整形した例を出力するだけ、元のコードに変化なし
+```
+gofmt math.go                                                                                                                 
+package mylib
+
+func Average(s []int) int {
+	total := 0
+	for _, i := range s {
+		total += i
+	}
+	return int(total / len(s))
+}
+```
+gofmt -w math.go
+=> ファイルを整形した形にして上書き
+
+```
+// math.go
+package mylib
+
+func Average(s []int) int {
+	total := 0
+	for _, i := range s {
+		total += i
+	}
+	return int(total / len(s))
+}
+
+```
