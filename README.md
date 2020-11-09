@@ -1676,3 +1676,61 @@ test1!test2!test3!
 test1!test2!test3!test4!
 
 ```
+
+# Sec-60
+package
+```
+── main.go
+├── mylib
+│   ├── human.go
+│   ├── math.go
+│   └── under
+│       └── hello.go
+
+// main.go
+package main
+
+import (
+	"awesomeProject/mylib"
+	"awesomeProject/mylib/under"
+	"fmt"
+)
+
+func main() {
+	s := []int{1, 2, 3, 4, 5}
+	fmt.Println(mylib.Average(s))
+
+	mylib.Say()
+	under.Hello()
+}
+
+// math.go
+package mylib
+
+func Average(s []int)int  {
+	total := 0
+	for _, i := range s{
+		total += i
+	}
+	return int(total/len(s))
+}
+
+//human.go
+package mylib
+
+import "fmt"
+
+func Say(){
+	fmt.Println("Hello!")
+}
+
+//hello.go
+package under
+
+import "fmt"
+
+func Hello() {
+	fmt.Println("Hello!!!")
+}
+
+```
