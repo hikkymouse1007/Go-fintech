@@ -1,52 +1,35 @@
 package main
 
 import (
-	"encoding/json"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 )
 
-type T struct{}
-
-type Person struct {
-	//Name      string   `json:"-"`
-	Name      string   `json:"name"`
-	Age       int      `json:"age,omitempty"`
-	Nicknames []string `json:"nicknames,omitempty"`
-	T         *T       `json:"T,omitempty"`
+var DB = map[string]string{
+	"User1Key": "User1Secret",
+	"USer2Key": "USer2Secret",
 }
 
-func (p *Person) UnmarshalJSON(b []byte) error {
-	type Person2 struct{
-		Name string
-	}
-	var p2 Person2
-	err := json.Unmarshal(b, &p2)
-	if err != nil {
-		fmt.Println(err)
-	}
-	p.Name = p2.Name + "!!"
-	return err
+func Server(apiKey, sign string, data []byte){
+	apiSecret := DB[apiKey]
+	h := hmac.New(sha256.New, []byte(apiSecret))
+	h.Write(data)
+	expectedHMAC := hex.EncodeToString(h.Sum(nil))
+	fmt.Println(sign == expectedHMAC )
 }
 
-//func (p Person) MarshalJSON() ([]byte, error) {
-//	//a := &struct{Name string}{Name: "test"} Personを使わず関数の中のみで直接宣言も可能
-//	v, err := json.Marshal(&struct {
-//		Name string
-//	}{
-//		Name: "Mr." + p.Name,
-//	})
-//	return v, err
-//}
+func main()  {
+	const apiKey = "User1Key"
+	const apiSecret = "User1Secret"
 
-func main() {
-	// jsonのキーは大文字でも実行される
-	b := []byte(`{"name":"mike","age":20,"nicknames":[]}`)
-	var p Person
-	if err := json.Unmarshal(b, &p); err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(p.Name, p.Age, p.Nicknames)
+	data := []byte("data")
+	h := hmac.New(sha256.New, []byte(apiSecret))
+	h.Write([]byte("data"))
+	sign := hex.EncodeToString(h.Sum(nil))
+	fmt.Println(sign)
+	fmt.Println(sign)
 
-	v, _ := json.Marshal(p)
-	fmt.Println(string(v))
+	Server(apiKey, sign, data)
 }
