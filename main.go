@@ -2,13 +2,32 @@ package main
 
 import (
 	"fmt"
-	"github.com/markcheno/go-quote"
-	_ "github.com/markcheno/go-talib"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 )
 
-func main() {
-	spy, _ := quote.NewQuoteFromYahoo("spy", "2016-01-01", "2016-04-01", quote.Daily, true)
-	fmt.Print(spy.CSV())
-	rsi2 := talib.Rsi(spy.Close, 2)
-	fmt.Println(rsi2)
+func main()  {
+	//resp, _ := http.Get("http://example. com")
+	//defer resp.Body.Close()
+	//body, _ := ioutil.ReadAll(resp.Body)
+	//fmt.Println(string(body))
+
+	base, _ := url.Parse("http://example.com")
+	reference, _ := url.Parse("/test?a=&b=2")
+	endpoint := base.ResolveReference(reference).String()
+	fmt.Println(endpoint)
+	// GETメゾッドのリクエスト
+	req, _ := http.NewRequest("GET", endpoint, nil)
+	req.Header.Add("If-None-Match", `W/"wizzy"`)
+	q := req.URL.Query()
+	q.Add("c", "3&%")
+	fmt.Println(q)
+	fmt.Println(q.Encode())
+	req.URL.RawQuery = q.Encode()
+
+	var client *http.Client = &http.Client{}
+	resp, _ := client.Do(req)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 }

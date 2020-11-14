@@ -2123,3 +2123,317 @@ func TestAverage(t *testing.T) {
 ドキュメントの書き方の参考はsdkの中などを
 見ると良い。
 
+ # Sec-66~72
+ ## time
+ ```
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	t := time.Now()
+	fmt.Println(t)
+	fmt.Println(t.Format(time.RFC3339))
+	fmt.Println(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second() )
+}
+
+=> 
+2020-11-14 13:46:23.215216 +0900 JST m=+0.000089372
+2020-11-14T13:46:23+09:00
+2020 November 14 13 46 23
+```
+
+## regax
+正規表現
+```
+package main
+
+import (
+	"fmt"
+	"regexp"
+)
+
+func main() {
+	//(マッチさせたいパターン, マッチさせたい単語)
+	match, _ := regexp.MatchString("a([a-z]+e)", "apple" )
+	//a-zのアルファベットなのでtrue
+	fmt.Println(match)
+
+	// 正規表現のオプティマイズ(何度も使い回すときはこの宣言をすると良い)
+	r := regexp.MustCompile("a([a-z]+e)")
+	ms := r.MatchString("apple")
+	fmt.Println(ms)
+
+	r2 := regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+	fs := r2.FindString("/view/test")
+	fmt.Println(fs)
+
+    //　マッチしたパターンの特定の単語を取り出す
+	fss := r2.FindStringSubmatch("/view/test")
+	fmt.Println(fss, fss[0], fss[1], fss[2])
+    fss = r2.FindStringSubmatch("/edit/test")
+    fmt.Println(fss, fss[0], fss[1], fss[2])
+	fss = r2.FindStringSubmatch("/save/test")
+	fmt.Println(fss, fss[0], fss[1], fss[2])
+}
+=>
+true
+true
+/view/test
+[/view/test view test] /view/test view test
+[/edit/test edit test] /edit/test edit test
+[/save/test save test] /save/test save test
+
+
+```
+
+## Sort
+```
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	i := []int{5, 3, 2, 8, 7}
+	s := []string{"d", "e", "f"}
+	p := []struct {
+		Name string
+		Age  int
+	}{
+		{"Nancy", 20},
+		{"Vera", 40},
+		{"Mike", 30},
+		{"Bob", 50},
+	}
+	fmt.Println(i, s, p)
+	sort.Ints(i)
+	sort.Strings(s)
+	fmt.Println(i, s)
+	sort.Slice(p, func(i, j int) bool {
+		return p[i].Name < p[j].Name
+	})
+	sort.Slice(p, func(i, j int) bool {
+		return p[i].Age < p[j].Age
+	})
+	fmt.Println(i, s, p)
+
+}
+
+=>
+[5 3 2 8 7] [d e f] [{Nancy 20} {Vera 40} {Mike 30} {Bob 50}]
+[2 3 5 7 8] [d e f]
+[2 3 5 7 8] [d e f] [{Nancy 20} {Mike 30} {Vera 40} {Bob 50}]
+
+```
+
+## iota
+定数に連番を振る
+```
+package main
+
+import "fmt"
+
+const (
+	c1 = iota //最初の定数のみ宣言すると以下の定数は連番になる
+	c2
+	c3
+)
+
+const (
+	_      = iota             // iota = 0
+	KB int = 1 << (10 * iota) // bit shifting iota = 1
+	MB                        // iota = 2
+	GB                        // iota = 3
+)
+
+func main() {
+	fmt.Println(c1, c2, c3)
+	fmt.Println(KB, MB, GB)
+}
+
+```
+
+## context
+goroutineの処理が長すぎる時に
+処理をキャンセルさせたい時の処理
+
+```
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+func longProcess(ctx context.Context, ch chan string)  {
+	fmt.Println("run")
+	time.Sleep(2 * time.Second)
+	fmt.Println("finish")
+	ch <- "result"
+}
+
+func main()  {
+	ch := make(chan string)
+	// contextの作成
+	ctx := context.Background()
+	// 指定した秒数以内に処理が終わらなかった場合にgoroutineを強制終了
+	ctx, cancel := context.WithTimeout(ctx, 3 * time.Second)
+	
+	defer cancel() //
+	go longProcess(ctx, ch)
+
+	CTXLOOP:
+		for {
+			select {
+			case <- ctx.Done(): // 3秒間処理が終わらなかった場合にエラーを出力
+				fmt.Println(ctx.Err())
+				break CTXLOOP
+			case <-ch:
+				fmt.Println("success")
+				break CTXLOOP
+
+			}
+		}
+	fmt.Println("###############")
+}
+=>
+run
+finish
+success
+###############
+
+//　タイムアウト < 実行時間にした場合
+ctx, cancel := context.WithTimeout(ctx, 1 * time.Second) // 一秒に設定
+=> 
+run
+context deadline exceeded
+###############
+```
+contextの処理を仮設定したい場合は以下のように定義できる
+```
+ctx := context.TODO()
+```
+
+## ioutil
+ioに特化したファイルの読み書きライブラリ　　
+
+```
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
+)
+
+func main() {
+	// ファイル読み込み
+	//content, err := ioutil.ReadFile("main.go")
+
+	// エラーハンドリング
+	//if err != nil{
+	//	log.Fatalln(err)
+	//}
+	//fmt.Println(string(content))
+
+	// ファイルの作成(書き出すファイル名, 内容, パーミッション)
+	//if err := ioutil.WriteFile("ioutil_temp.go", content, 0666); err != nil{
+	//	log.Fatalln(err)
+	//}
+
+	// バッファ: 一時的な記憶領域
+	r := bytes.NewBuffer([]byte("abc"))
+	content, _ := ioutil.ReadAll(r)
+	fmt.Println(string(content))
+
+}
+
+=> 
+abc
+
+```
+
+## Sec-73 
+http
+```
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+func main()  {
+	resp, _ := http.Get("http://example. com")
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+=>
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+
+//　クエリの追加
+func main()  {
+	//resp, _ := http.Get("http://example. com")
+	//defer resp.Body.Close()
+	//body, _ := ioutil.ReadAll(resp.Body)
+	//fmt.Println(string(body))
+
+	base, _ := url.Parse("http://example.com")
+	reference, _ := url.Parse("/test?a=&b=2")
+	endpoint := base.ResolveReference(reference).String()
+	fmt.Println(endpoint)
+}
+
+=>
+http://example.com/test?a=&b=2
+
+// RESTのリクエスト
+req, _ := http.NewRequest("GET", endpoint, nil)
+	req.Header.Add("If-None-Match", `W/"wizzy"`)
+	q := req.URL.Query()
+	q.Add("c", "3&%")
+	fmt.Println(q)
+// アンパサンドのエンコード
+	fmt.Println(q.Encode())
+
+/*=>
+map[a:[] b:[2] c:[3&%]]
+a=&b=2&c=3%26%25
+*/
+	req.URL.RawQuery = q.Encode() //エンコードを渡す
+
+        var client *http.Client = &http.Client{}
+	resp, _ := client.Do(req)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+
+=>
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+~~~
+```
+
+
+
