@@ -2435,5 +2435,142 @@ a=&b=2&c=3%26%25
 ~~~
 ```
 
+## Sec-74
 
+```
+package main
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Person struct {
+	Name string
+	Age int
+	Nicknames []string
+}
+
+func main() {
+	b := []byte(`{"name":"mike","age":20,"nicknames":["a","b","c"]}`)
+	var p Person
+	if err := json.Unmarshal(b, &p); err != nil{
+		fmt.Println(err)
+	}
+	fmt.Println(p.Name, p.Age, p.Nicknames)
+
+	v, _ := json.Marshal(p)
+	fmt.Println(string(v))
+=>
+ mike 20 [a b c]
+ {"Name":"mike","Age":20,"Nicknames":["a","b","c"]}
+   
+```
+
+structをjsonとして定義し、jsonの出力をエンコードできる
+```
+type Person struct {
+	Name      string   `json:"namexxxx"`
+	Age       int      `json:"age"`
+	Nicknames []string `json:"nicknames"`
+}
+
+=>
+{"namexxxx":"","age":20,"nicknames":["a","b","c"]}
+```
+
+jsonの出力を制御する
+```
+type T struct {}
+
+type Person struct {
+	//Name      string   `json:"-"`
+	Name      string   `json:"name,omitempty"`  //keyの値が空なら出力しない
+	Age       int      `json:"age,omitempty"`
+	Nicknames []string `json:"nicknames,omitempty"`
+	T         *T       `json:"T,omitempty"`     //構造体はポインタで宣言
+}
+
+func main() {
+	// jsonのキーは大文字でも実行される
+	b := []byte(`{"name":"","age":20,"nicknames":[]}`)
+	var p Person
+	if err := json.Unmarshal(b, &p); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(p.Name, p.Age, p.Nicknames)
+
+	v, _ := json.Marshal(p)
+	fmt.Println(string(v))
+}
+=>
+ 20 []
+{"age":20}
+
+```
+
+jsonMarshalのカスタマイズ 
+```
+type Person struct {
+	//Name      string   `json:"-"`
+	Name      string   `json:"name"`
+	Age       int      `json:"age,omitempty"`
+	Nicknames []string `json:"nicknames,omitempty"`
+	T         *T       `json:"T,omitempty"`
+}
+
+func (p Person) MarshalJSON() ([]byte, error) {
+	//a := &struct{Name string}{Name: "test"} Personを使わず関数の中のみで直接宣言も可能
+	v, err := json.Marshal(&struct {
+		Name string
+	}{
+		Name: "Mr." + p.Name,
+	})
+	return v, err
+}
+
+func main() {
+	b := []byte(`{"name":"mike","age":20,"nicknames":[]}`)
+	var p Person
+	if err := json.Unmarshal(b, &p); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(p.Name, p.Age, p.Nicknames)
+
+	v, _ := json.Marshal(p) //MarshalJSONが呼び出されてカスタマイズされる
+	fmt.Println(string(v))
+}
+
+```
+
+Unmarshalのカスタマイズ
+```
+func (p *Person) UnmarshalJSON(b []byte) error {
+	type Person2 struct{
+		Name string
+	}
+	var p2 Person2
+	err := json.Unmarshal(b, &p2)
+	if err != nil {
+		fmt.Println(err)
+	}
+	p.Name = p2.Name + "!"
+	return err
+}
+
+func main() {
+	b := []byte(`{"name":"mike","age":20,"nicknames":[]}`)
+	var p Person
+	if err := json.Unmarshal(b, &p); err != nil { // 変数errにUnmarshalを代入し、
+		fmt.Println(err)
+	}
+	fmt.Println(p.Name, p.Age, p.Nicknames)
+
+	v, _ := json.Marshal(p)
+	fmt.Println(string(v))
+}
+=>
+mike! 0 []
+{"name":"mike!"}
+
+```
