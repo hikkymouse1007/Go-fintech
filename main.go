@@ -1,35 +1,47 @@
 package main
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
-	"fmt"
+	"log"
+	"net/url"
+
+	"github.com/gorilla/websocket"
 )
 
-var DB = map[string]string{
-	"User1Key": "User1Secret",
-	"USer2Key": "USer2Secret",
+type JsonRPC2 struct {
+	Version string `json:"jsonrpc"`
+	Method string `json:"method"`
+	Params interface{} `json:"params"`
+	Result interface{} `json:"result,omitempty"`
+	Id *int `json:"id,omitempty"`
+}
+type SubscribeParams struct {
+	Channel string `json:"channel"`
 }
 
-func Server(apiKey, sign string, data []byte){
-	apiSecret := DB[apiKey]
-	h := hmac.New(sha256.New, []byte(apiSecret))
-	h.Write(data)
-	expectedHMAC := hex.EncodeToString(h.Sum(nil))
-	fmt.Println(sign == expectedHMAC )
-}
+func main() {
+	u := url.URL{Scheme: "wss", Host: "ws.lightstream.bitflyer.com", Path: "/json-rpc"}
+	log.Printf("connecting to %s", u.String())
 
-func main()  {
-	const apiKey = "User1Key"
-	const apiSecret = "User1Secret"
+	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	if err != nil {
+		log.Fatal("dial:", err)
+	}
+	defer c.Close()
 
-	data := []byte("data")
-	h := hmac.New(sha256.New, []byte(apiSecret))
-	h.Write([]byte("data"))
-	sign := hex.EncodeToString(h.Sum(nil))
-	fmt.Println(sign)
-	fmt.Println(sign)
+	if err := c.WriteJSON(&JsonRPC2{Version: "2.0", Method: "subscribe", Params: &SubscribeParams{"lightning_ticker_BTC_JPY"}}); err != nil {
+		log.Fatal("subscribe:", err)
+		return
+	}
 
-	Server(apiKey, sign, data)
+	for {
+		message := new(JsonRPC2)
+		if err := c.ReadJSON(message); err != nil {
+			log.Println("read:", err)
+			return
+		}
+
+		if message.Method == "channelMessage" {
+			log.Println(message.Params);
+		}
+	}
 }

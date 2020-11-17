@@ -2617,3 +2617,307 @@ func main()  {
 	Server(apiKey, sign, data)
 }
 ```
+
+# Sec-76 
+Semaphore
+goroutine同時実行数を指定できる
+https://godoc.org/golang.org/x/sync/semaphore
+
+```
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"golang.org/x/sync/semaphore"
+)
+
+var s *semaphore.Weighted = semaphore.NewWeighted(1) //goroutineの同時実行数を限定できる
+
+func longProcess(ctx context.Context) {
+	if err := s.Acquire(ctx, 1); err != nil{
+		fmt.Println(err)
+		return
+	}
+	defer s.Release(1) // goroutineを一つずつリリース
+	fmt.Println("Wait...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Done")
+}
+
+func main() {
+	ctx := context.TODO()
+	go longProcess(ctx)
+	go longProcess(ctx)
+	go longProcess(ctx)
+	time.Sleep(5 * time.Second)
+}
+
+
+=>
+Wait...
+Done
+Wait...
+Done
+Wait...
+Done
+
+
+// neweightedの数を変更
+var s *semaphore.Weighted = semaphore.NewWeighted(2) //goroutineの同時実行数:2
+=>
+Wait...
+Wait...
+Done
+Done
+Wait...
+Done
+
+
+
+var s *semaphore.Weighted = semaphore.NewWeighted(2) //goroutineの同時実行数:3
+=>
+Wait...
+Wait...
+Wait...
+Done
+Done
+Done
+
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"golang.org/x/sync/semaphore"
+)
+
+var s *semaphore.Weighted = semaphore.NewWeighted(1) //goroutineの同時実行数を限定できる
+
+func longProcess(ctx context.Context) {
+
+	isAcquire := s.TryAcquire(1)
+	if !isAcquire {
+		fmt.Println("Could not get lock")
+		return
+	}
+	
+	defer s.Release(1)
+	fmt.Println("Wait...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Done")
+}
+
+func main() {
+	ctx := context.TODO()
+	go longProcess(ctx)
+	go longProcess(ctx)
+	go longProcess(ctx)
+	time.Sleep(5 * time.Second)
+}
+=>
+Wait...
+Could not get lock
+Could not get lock
+Done
+
+
+```
+
+TryAcquire(1)
+一つ目のgoroutineが実行されている間に
+実行しようとした2,3個目のgoroutineは実行がキャンセルされ、
+4つめのgoroutineは実行される。
+```
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"golang.org/x/sync/semaphore"
+)
+
+var s *semaphore.Weighted = semaphore.NewWeighted(1) //goroutineの同時実行数を限定できる
+
+func longProcess(ctx context.Context) {
+	isAcquire := s.TryAcquire(1)
+	if !isAcquire {
+		fmt.Println("Could not get lock")
+		return
+	}
+	/*
+	if err := s.Acquire(ctx, 1); err != nil{
+		fmt.Println(err)
+		return
+	}
+	//*/
+	defer s.Release(1)
+	fmt.Println("Wait...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Done")
+}
+
+func main() {
+	ctx := context.TODO()
+	go longProcess(ctx)
+	go longProcess(ctx)
+	go longProcess(ctx)
+	time.Sleep(2 * time.Second)
+	go longProcess(ctx)
+	time.Sleep(5 * time.Second)
+}
+
+=>
+Wait...
+Could not get lock
+Could not get lock
+Done
+Wait...
+Done
+```
+
+# Sec-77
+go-ini
+https://github.com/go-ini/ini
+c
+```
+//config.ini
+[web]
+port = 8080
+
+[db]
+name = stockdata.sql
+driver = sqlite3
+
+
+// main.go
+package main
+
+import (
+	"fmt"
+	"gopkg.in/ini.v1"
+)
+
+type ConfigList struct {
+	Port      int
+	DbName    string
+	SQLDriver string
+}
+
+var Config ConfigList
+
+func init() {
+	cfg, _ := ini.Load("config.ini")
+	Config = ConfigList{
+		Port: cfg.Section("web").Key("port").MustInt(),
+		DbName: cfg.Section("db").Key("name").MustString("example.sql"),
+		SQLDriver: cfg.Section("db").Key("driver").String(),
+
+	}
+}
+
+func main() {
+	fmt.Printf("%T %v\n", Config.Port, Config.Port)
+	fmt.Printf("%T %v\n", Config.DbName, Config.DbName)
+	fmt.Printf("%T %v\n", Config.SQLDriver, Config.SQLDriver)
+}
+
+=>
+int 8080
+string stockdata.sql
+string sqlite3
+```
+
+#Sec-78
+talib
+```
+package main
+
+import (
+	"fmt"
+	"github.com/markcheno/go-quote"
+	"github.com/markcheno/go-talib"
+)
+
+func main() {
+	spy, _ := quote.NewQuoteFromYahoo(
+		"spy", "2018-04-01", "2019-01-01", quote.Daily, true)
+	fmt.Print(spy.CSV())
+    //RSIの表示
+	rsi2 := talib.Rsi(spy.Close, 2)
+	fmt.Println(rsi2)
+    // EMAの表示
+	mva := talib.Ema(spy.Close, 14)
+	fmt.Println(mva)
+
+}
+
+```
+
+Sec-80
+JSON-RPC 2.0 over WebSocket
+https://github.com/gorilla/websocket
+Se-79のAPIが終わったため、
+以下のコードを使用する。
+```
+package main
+
+import (
+	"log"
+	"net/url"
+
+	"github.com/gorilla/websocket"
+)
+
+type JsonRPC2 struct {
+	Version string `json:"jsonrpc"`
+	Method string `json:"method"`
+	Params interface{} `json:"params"`
+	Result interface{} `json:"result,omitempty"`
+	Id *int `json:"id,omitempty"`
+}
+type SubscribeParams struct {
+	Channel string `json:"channel"`
+}
+
+func main() {
+	u := url.URL{Scheme: "wss", Host: "ws.lightstream.bitflyer.com", Path: "/json-rpc"}
+	log.Printf("connecting to %s", u.String())
+
+	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	if err != nil {
+		log.Fatal("dial:", err)
+	}
+	defer c.Close()
+
+	if err := c.WriteJSON(&JsonRPC2{Version: "2.0", Method: "subscribe", Params: &SubscribeParams{"lightning_ticker_BTC_JPY"}}); err != nil {
+		log.Fatal("subscribe:", err)
+		return
+	}
+
+	for {
+		message := new(JsonRPC2)
+		if err := c.ReadJSON(message); err != nil {
+			log.Println("read:", err)
+			return
+		}
+
+		if message.Method == "channelMessage" {
+			log.Println(message.Params);
+		}
+	}
+}
+
+=>
+2020/11/18 00:47:10 connecting to wss://ws.lightstream.bitflyer.com/json-rpc
+2020/11/18 00:47:11 map[channel:lightning_ticker_BTC_JPY message:map[best_ask:1.8e+06 best_ask_size:0.74 best_bid:1.798813e+06 best_bid_size:0.301 ltp:1.8e+06 market_ask_size:0 market_bid_size:0 product_code:BTC_JPY state:RUNNING tick_id:6.944037e+06 timestamp:2020-11-17T15:47:11.5996302Z total_ask_depth:590.79348192 total_bid_depth:1345.18437775 volume:10136.71665698 volume_by_product:10136.71665698]]
+2020/11/18 00:47:11 map[channel:lightning_ticker_BTC_JPY message:map[best_ask:1.8e+06 best_ask_size:0.74 best_bid:1.798813e+06 best_bid_size:0.301 ltp:1.8e+06 market_ask_size:0 market_bid_size:0 product_code:BTC_JPY state:RUNNING tick_id:6.944037e+06 timestamp:2020-11-17T15:47:11.5996302Z total_ask_depth:590.79348192 total_bid_depth:1345.18437775 volume:10136.71665698 volume_by_product:10136.71665698]]
+
+
+```
